@@ -1,5 +1,5 @@
 {
-  "name": "gomu",
+  "name": "@akuma-no-mi/gomu",
   "version": "0.0.1-alpha.0",
   "type": "module",
   "main": "./dist/gomu.js",

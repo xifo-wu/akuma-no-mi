@@ -80,6 +80,24 @@ const ButtonSection = () => {
         <Button radius="lg">LG Button</Button>
         <Button radius="xl">XL Button</Button>
       </div>
+
+      <h3>Button Radius</h3>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <Button
+          sx={(theme) => ({
+            background: theme.dark.main,
+          })}
+        >
+          Custom Button
+        </Button>
+        <Button
+          sx={{
+            background: '#003eb3',
+          }}
+        >
+          Custom OBJ Button
+        </Button>
+      </div>
     </section>
   );
 };

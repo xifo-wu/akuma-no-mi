@@ -1,12 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { DefaultTheme, CSSObject } from 'styled-components';
 import { lighten, darken, getContrastText } from '../../utils/colorManipulator';
 import { CLASSNAME_PREFIX } from '../../utils/constant';
 import colors from '../../utils/colors';
 
 export interface BaseButtonProps {
   variant?: 'text' | 'solid' | 'outline';
-  mode?: string | 'light' | 'dark';
+  mode?: DefaultTheme['mode'];
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
@@ -14,6 +14,7 @@ export interface BaseButtonProps {
   loadingPosition?: 'left' | 'right' | 'center';
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  sx?: CSSObject | ((t: DefaultTheme) => CSSObject);
 }
 
 export const BaseButton = styled.button<BaseButtonProps>((props) => {
@@ -25,6 +26,7 @@ export const BaseButton = styled.button<BaseButtonProps>((props) => {
   const borderRadius = props.theme.responsive[props.radius || 'sm']?.borderRadius || 2;
   const mainColor =
     mode == 'dark' ? darken(props.theme['light'].main, 0.5) : props.theme['light'].main;
+  const sx = props.sx instanceof Function ? props.sx(props.theme) : props.sx;
 
   return {
     position: 'relative',
@@ -108,6 +110,7 @@ export const BaseButton = styled.button<BaseButtonProps>((props) => {
         borderRadius,
       },
     },
+    ...sx,
   };
 });
 

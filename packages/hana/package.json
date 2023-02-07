@@ -1,0 +1,21 @@
+{
+  "name": "@akuma-no-mi/hana",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "es/index.js",
+  "homepage": "https://github.com/xifo-wu/akuma-no-mi/tree/main/packages/hana#readme",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

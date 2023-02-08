@@ -4,6 +4,7 @@ export { default as Button } from './Button';
 export * from './Button';
 
 interface Mode {
+  background?: string;
   color: string;
   main: string;
   disabled: string;

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { BaseButton } from './BaseButton';
-import { CLASSNAME_PREFIX } from '../../utils/constant';
-import Loading from '../../icons/Loading';
+import { CLASSNAME_PREFIX } from '../utils/constant';
+import Loading from '../icons/Loading';
 import type { ButtonHTMLAttributes } from 'react';
 import type { BaseButtonProps } from './BaseButton';
 
@@ -50,7 +50,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
       ) : (
         leftIcon
       )}
-      {loading && loadingText ? loadingText : children}
+      {loading && loadingText ? loadingText : <div className={`${CLASSNAME_PREFIX}-btn-content`}>{children}</div>}
       {loading && loadingPosition === 'right' ? (
         <Loading width={16} stroke={variant !== 'solid' ? '#333' : '#fff'} />
       ) : (

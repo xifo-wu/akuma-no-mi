@@ -1,8 +1,14 @@
-import React from 'react';
 import styled, { DefaultTheme, CSSObject } from 'styled-components';
-import { lighten, darken, getContrastText } from '../../utils/colorManipulator';
-import { CLASSNAME_PREFIX } from '../../utils/constant';
-import colors from '../../utils/colors';
+import { lighten, darken, getContrastText } from '@akuma-no-mi/hana';
+import { CLASSNAME_PREFIX } from '../utils/constant';
+import colors from '../theme/colors';
+import type { ReactNode } from 'react';
+
+type Gradient = {
+  from: string;
+  to: string;
+  deg?: string | number;
+};
 
 export interface BaseButtonProps {
   variant?: 'text' | 'solid' | 'outline';
@@ -10,16 +16,17 @@ export interface BaseButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
-  loadingText?: React.ReactNode;
+  loadingText?: ReactNode;
   loadingPosition?: 'left' | 'right' | 'center';
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   sx?: CSSObject | ((t: DefaultTheme) => CSSObject);
+  gradient?: Gradient;
 }
 
 export const BaseButton = styled.button<BaseButtonProps>((props) => {
   // TODO 可以单独定制 button 主题
-  const { size = 'md' } = props;
+  const { size = 'md', gradient } = props;
   const variant = props.variant || 'solid';
   const mode = props.mode || props.theme.mode || 'light';
   const fontSize = props.theme.responsive[size || 'md']?.fontSize || 16;
@@ -27,6 +34,15 @@ export const BaseButton = styled.button<BaseButtonProps>((props) => {
   const mainColor =
     mode == 'dark' ? darken(props.theme['light'].main, 0.5) : props.theme['light'].main;
   const sx = props.sx instanceof Function ? props.sx(props.theme) : props.sx;
+
+  const gradientDeg =
+    (gradient &&
+      gradient.deg &&
+      (typeof gradient.deg === 'number' ? `${gradient.deg}deg` : gradient.deg)) ||
+    'to left';
+
+  // TODO 支持从 sx 或 style 内获取
+  const borderWidth = 1;
 
   return {
     position: 'relative',
@@ -51,21 +67,67 @@ export const BaseButton = styled.button<BaseButtonProps>((props) => {
     ...(variant === 'solid' && {
       background: mainColor,
       color: getContrastText(mainColor, props.theme['light'].color, props.theme['dark'].color),
+      ...(gradient && {
+        background: `linear-gradient(${gradientDeg}, ${gradient.from}, ${gradient.to})`,
+        '&:hover': {
+          backgroundSize: '150%',
+        },
+      }),
     }),
     ...(variant === 'text' && {
       color: mainColor,
       '&:hover': {
         background: lighten(mainColor, 0.9),
       },
+      ...(gradient && {
+        background: `linear-gradient(${gradientDeg}, ${gradient.from}, ${gradient.to})`,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        '&:hover': {
+          backgroundSize: '150%',
+        },
+      }),
     }),
     ...(variant === 'outline' && {
       borderStyle: 'solid',
-      borderWidth: 1,
+      borderWidth,
       borderColor: mainColor,
       color: mainColor,
       '&:hover': {
         background: lighten(mainColor, 0.95),
       },
+      ...(gradient && {
+        boxSizing: 'border-box',
+        backgroundClip: 'padding-box',
+        [`& .${CLASSNAME_PREFIX}-btn-content`]: {
+          background: `linear-gradient(${gradientDeg}, ${gradient.from}, ${gradient.to})`,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        },
+        overflow: 'unset',
+        background: props.theme[mode].background,
+        borderColor: 'transparent',
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: -1,
+          margin: -borderWidth,
+          borderRadius: 'inherit',
+          backgroundImage: `linear-gradient(${gradientDeg}, ${gradient.from}, ${gradient.to})`,
+        },
+        '&:hover': {
+          backgroundSize: '200%',
+          boxSizing: 'border-box',
+          backgroundClip: 'padding-box',
+          [`& .${CLASSNAME_PREFIX}-btn-content`]: {
+            backgroundSize: '200%',
+          },
+        },
+      }),
     }),
     // #endregion
     // #region button size style
@@ -120,11 +182,13 @@ BaseButton.defaultProps = {
   theme: {
     mode: 'light',
     light: {
+      background: '#fff',
       color: colors.slate[900],
       main: colors.sky[600],
       disabled: 'rgba(0, 0, 0, 0.38)',
     },
     dark: {
+      background: '#121212',
       color: colors.slate[50],
       main: colors.gray[900],
       disabled: 'rgba(0, 0, 0, 0.5)',

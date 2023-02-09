@@ -4,6 +4,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "homepage": "https://github.com/xifo-wu/akuma-no-mi/tree/main/packages/hana#readme",
+  "files": ["lib"],
   "license": "MIT",
   "scripts": {
     "dev": "vite",

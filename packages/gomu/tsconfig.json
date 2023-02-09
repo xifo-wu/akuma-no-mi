@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "outDir": "./es",
+    "outDir": "lib",
     "baseUrl": "./src/"
   },
   "include": ["src"],

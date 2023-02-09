@@ -14,6 +14,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       formats: ['es'],
     },
+    sourcemap: true,
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['react', 'styled-components', 'clsx', 'react-is', 'react/jsx-runtime'],
@@ -23,7 +24,7 @@ export default defineConfig({
         esModule: true,
         preserveModules: true,
         preserveModulesRoot: 'src',
-        dir: 'es',
+        dir: 'lib',
       },
     },
   },
@@ -33,7 +34,7 @@ export default defineConfig({
       sourceMaps: true,
     })),
     dts({
-      outputDir: "es"
+      outputDir: "lib"
     }),
   ],
 });

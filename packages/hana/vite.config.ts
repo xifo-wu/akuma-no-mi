@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import typescript from '@rollup/plugin-typescript';
+import { swc } from 'rollup-plugin-swc3';
+import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,8 +18,14 @@ export default defineConfig({
           //让打包目录和我们目录对应
           preserveModules: true,
           //配置打包根目录
-          dir: 'es',
+          dir: 'lib',
           preserveModulesRoot: 'src',
+        },
+        {
+          format: 'cjs',
+          entryFileNames: '[name].cjs',
+          //配置打包根目录
+          dir: 'lib',
         },
       ],
     },
@@ -28,6 +35,9 @@ export default defineConfig({
     },
   },
   plugins: [
-    typescript()
+    swc(),
+    dts({
+      outputDir: "lib"
+    }),
   ],
 });

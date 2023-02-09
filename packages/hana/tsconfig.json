@@ -16,7 +16,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "es",
+    "outDir": "lib",
     "declaration": true
   },
   "include": ["src"]
